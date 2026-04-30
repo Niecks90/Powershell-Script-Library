@@ -43,4 +43,4 @@ foreach ($user in $users) {
 }
 
 $export | Export-Csv -Path "modifications_preview.csv" -NoTypeInformation -Encoding UTF8
-Write-Host "✅ Export terminé : $($export.Count) modification(s) détectée(s)."
+Write-Host "✅ Export complete : $($export.Count) edit(s) detected."
