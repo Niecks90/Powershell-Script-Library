@@ -3,17 +3,7 @@ Import-Module ActiveDirectory
 
 # Liste des OU à cibler
 $OUs = @(
-    "OU=Users,OU=Benelux,DC=domain,DC=fr",
-    "OU=Users,OU=Czechia,DC=domain,DC=fr",
-    "OU=Users,OU=External,DC=domain,DC=fr",
     "OU=Users,OU=France,DC=domain,DC=fr",
-    "OU=Users,OU=Germany,DC=domain,DC=fr",
-    "OU=Users,OU=Group,DC=domain,DC=fr",
-    "OU=Admins,OU=Group,DC=domain,DC=fr",
-    "OU=Users,OU=Italy,DC=domain,DC=fr",
-    "OU=Users,OU=Poland,DC=domain,DC=fr",
-    "OU=Users,OU=Portugal,DC=domain,DC=fr",
-    "OU=Users,OU=Romania,DC=domain,DC=fr",
     "OU=Users,OU=Spain,DC=domain,DC=fr",
     "OU=Users,OU=United Kingdom,DC=domain,DC=fr"
 )
