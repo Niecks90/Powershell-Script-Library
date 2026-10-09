@@ -1,12 +1,15 @@
-# Replace 'username' with the username of the AD account you want to check
-$Username = "username"
+[CmdletBinding()]
+param (
+    [Parameter(Mandatory=$true)]
+    [string]$Username
+)
 
-# Get the AD user object
-$User = Get-ADUser -Identity $Username
+try {
+    # Get the AD user object
+    $User = Get-ADUser -Identity $Username -Properties WhenChanged -ErrorAction Stop
 
-if ($User) {
     $WhenChanged = $User.WhenChanged
     Write-Host "The account '$Username' was last changed (deactivated) on: $WhenChanged"
-} else {
-    Write-Host "Account '$Username' not found in Active Directory."
+} catch {
+    Write-Host "Account '$Username' not found in Active Directory or an error occurred."
 }
