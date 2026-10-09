@@ -1,9 +1,26 @@
-﻿##Get the Exchange module
-##Skip this line if you already have it
-Install-Module ExchangeOnlineManagement
+[CmdletBinding()]
+param (
+    [Parameter(Mandatory=$true)]
+    [string]$SharedMailbox,
 
-##Connection to Exchange online 
-Connect-ExchangeOnline -UserPrincipalName user.name@domain.eu
+    [Parameter(Mandatory=$true)]
+    [string]$AdminUPN
+)
 
-##Change the mailbox setting
-Set-Mailbox test.de@domain.eu -MessageCopyForSentAsEnabled $true
+try {
+    ##Get the Exchange module
+    if (-not (Get-Module -ListAvailable -Name ExchangeOnlineManagement)) {
+        Install-Module ExchangeOnlineManagement -Force -AllowClobber -Scope CurrentUser
+    }
+
+    ##Connection to Exchange online
+    if (-not (Get-Module -Name ExchangeOnlineManagement)) {
+        Connect-ExchangeOnline -UserPrincipalName $AdminUPN
+    }
+
+    ##Change the mailbox setting
+    Set-Mailbox -Identity $SharedMailbox -MessageCopyForSentAsEnabled $true
+    Write-Output "Successfully updated MessageCopyForSentAsEnabled for $SharedMailbox"
+} catch {
+    Write-Error "Failed to update Shared Mailbox setting: $_"
+}

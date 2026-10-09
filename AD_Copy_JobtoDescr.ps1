@@ -9,16 +9,24 @@ $OUs = @(
 )
 
 foreach ($OU in $OUs) {
-    # Retrieve all users in the OU
-    $users = Get-ADUser -Filter * -SearchBase $OU -Property DisplayName, Title, Description
+    try {
+        # Retrieve all users in the OU who have a Title
+        $users = Get-ADUser -Filter "Title -like '*'" -SearchBase $OU -Property DisplayName, Title, Description
 
-    foreach ($user in $users) {
-        if ($user.Title -ne $null) {
-            Set-ADUser -Identity $user -Description $user.Title
-            Write-Output "Updated Description for $($user.DisplayName) with Job Title: $($user.Title)"
-        } else {
-            Write-Output "No Job Title found for $($user.DisplayName), skipping."
+        foreach ($user in $users) {
+            if ($user.Description -ne $user.Title) {
+                try {
+                    Set-ADUser -Identity $user -Description $user.Title
+                    Write-Output "Updated Description for $($user.DisplayName) with Job Title: $($user.Title)"
+                } catch {
+                    Write-Error "Failed to update $($user.DisplayName): $_"
+                }
+            } else {
+                Write-Output "Description already matches Job Title for $($user.DisplayName), skipping."
+            }
         }
+    } catch {
+        Write-Error "Failed to process OU $OU : $_"
     }
 }
 

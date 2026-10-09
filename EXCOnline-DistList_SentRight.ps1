@@ -1,8 +1,23 @@
-# Connexion a Exchange Online
-Connect-ExchangeOnline
+[CmdletBinding()]
+param (
+    [Parameter(Mandatory=$true)]
+    [string]$Identity,
 
-# Ajouter le droits sur la liste de distrib
-Add-RecipientPermission -Identity ict@domain.eu -Trustee user.name@domain.eu -AccessRights SendAs
+    [Parameter(Mandatory=$true)]
+    [string]$Trustee
+)
 
-# Verifier les droits sur la liste
-Get-RecipientPermission -Identity ict@domain.eu | Select-Object Trustee, AccessControlType, AccessRights
+try {
+    # Connexion a Exchange Online si non connecté
+    if (-not (Get-Module -Name ExchangeOnlineManagement)) {
+        Connect-ExchangeOnline
+    }
+
+    # Ajouter le droits sur la liste de distrib
+    Add-RecipientPermission -Identity $Identity -Trustee $Trustee -AccessRights SendAs -Confirm:$false
+
+    # Verifier les droits sur la liste
+    Get-RecipientPermission -Identity $Identity | Select-Object Trustee, AccessControlType, AccessRights
+} catch {
+    Write-Error "Failed to add RecipientPermission: $_"
+}
