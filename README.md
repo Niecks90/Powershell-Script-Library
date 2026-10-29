@@ -39,6 +39,7 @@ Exchange Online management utilities.
 
 | Script | Description | Requirements |
 |---|---|---|
+| `Add-EXODistributionGroupAllowedSender.ps1` | Adds allowed senders to the 'AcceptMessagesOnlyFromSendersOrMembers' list of an EXO distribution group. | ExchangeOnlineManagement |
 | `Add-EXODistributionGroupSendAs.ps1` | Grants SendAs permission to a trustee for an EXO distribution group. | ExchangeOnlineManagement |
 | `Set-EXOSharedMailboxSentItem.ps1` | Enables copying of sent items for SendAs operations on a shared mailbox. | ExchangeOnlineManagement |
 
